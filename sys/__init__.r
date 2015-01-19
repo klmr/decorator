@@ -12,6 +12,31 @@ exit = function (code = 0)
     quit(save = 'no', status = if (is.null(code)) 0 else code)
 
 #' Execute the \code{entry_point} function defined by the caller
+#'
+#' Execute an entry point function, but only if the calling code is executed as
+#' a stand-alone script, not when it is imported as a module.
+#'
+#' @param entry_point code or function to run (default: \code{main})
+#' @return This function is called for its side-effect. If the calling code was
+#' imported as a module, then return nothing. Otherwise, this function
+#' \emph{does not return}; instead, it quits the script.
+#'
+#' @details The argument may either be a function (the default is assumed to be
+#' a function called \code{main} in the calling code’s scope) or a
+#' brace-enclosed expression. It is executed in the calling code’s scope.
+#'
+#' @examples
+#' \dontrun{
+#' main = function () { … }
+#' # Run function `main`
+#' sys$run()
+#'
+#' # Run the specified function
+#' sys$run(function () { … })
+#'
+#' # Run the specified code
+#' sys$run({ … })
+#' }
 run = function (entry_point = main) {
     caller = parent.frame()
     caller_name = evalq(modules::module_name(), envir = caller)
