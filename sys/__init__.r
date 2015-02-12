@@ -5,6 +5,12 @@ library = function (...)
 #' The command line arguments
 args = commandArgs(trailingOnly = TRUE)
 
+#' The name of the script
+script_name = local({
+    file = grep('^--file=', commandArgs(trailingOnly = FALSE), value = TRUE)
+    sub('--file=', '', file)
+})
+
 #' Quit the program
 #'
 #' @param code numeric exit code (default: \code{0})
