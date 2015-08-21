@@ -33,3 +33,6 @@ hash.default = function (obj) deparse(obj)
 hash.environment = function (obj) hash(as.list(obj))
 
 hash.NULL = function (obj) 'NULL'
+
+hash.function = function (obj)
+    paste(deparse(obj), capture.output(environment(obj)))
