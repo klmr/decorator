@@ -6,7 +6,7 @@ modules::import('ebits/base', attach = c('closure', 'match_call_defaults'))
 # Suspicion: somehow, the state of the function is shared, and `n` is
 # continuously decreased. But only sometimes.
 cache = decorator %@% function (f) {
-    cache = list()
+    cache = new.env()
     g = function (...) {
         call = match_call_defaults()
         args = call[-1]
