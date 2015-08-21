@@ -11,7 +11,7 @@ cache = decorator %@% function (f) {
         call = match_call_defaults()
         args = call[-1]
         args_hash = if (is.null(args)) '.' else
-            paste(sapply(lapply(args, eval.parent), deparse), collapse = ', ')
+            paste(sapply(lapply(args, eval.parent), hash), collapse = ', ')
         if (exists(args_hash, cache))
             cache[[args_hash]]
         else {
@@ -25,3 +25,11 @@ cache = decorator %@% function (f) {
 }
 
 `%@%` = decorate$`%@%`
+
+hash = function (obj) UseMethod('hash')
+
+hash.default = function (obj) deparse(obj)
+
+hash.environment = function (obj) hash(as.list(obj))
+
+hash.NULL = function (obj) 'NULL'
