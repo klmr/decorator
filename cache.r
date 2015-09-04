@@ -1,17 +1,15 @@
 decorate = modules::import('decorate', attach = TRUE)
 modules::import('ebits/base', attach = c('closure', 'match_call_defaults'))
 
-# FIXME: Doesn’t work with recursive functions
-# Reproduce: fib = .cache %@% function (n) if (n < 2) 1 else fib(n - 1) + fib(n - 2)
-# Suspicion: somehow, the state of the function is shared, and `n` is
-# continuously decreased. But only sometimes.
 cache = decorator %@% function (f) {
     cache = new.env()
     g = function (...) {
         call = match_call_defaults()
         args = call[-1]
+        # Use a helper to evaluate all arguments in their proper scope.
+        calling_args = `[[<-`(call, 1, function (...) list(...))
         args_hash = if (is.null(args)) '.' else
-            paste(sapply(lapply(args, eval.parent), hash), collapse = ', ')
+            paste(lapply(eval.parent(calling_args), hash), collapse = ', ')
         if (exists(args_hash, cache))
             cache[[args_hash]]
         else {
