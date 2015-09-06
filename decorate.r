@@ -21,6 +21,21 @@ decorator = function (f)
 
 decorator = decorator(decorator)
 
+print.decorated = function (x, useSource = TRUE, ...) {
+    bare = function (f) {
+        bare = unclass(f)
+        attr(bare, 'decorators') = NULL
+        bare
+    }
+
+    fun_def = capture.output(print.function(bare(x), useSource = useSource, ...))
+    for (decorator in attr(x, 'decorators'))
+        cat(deparse(decorator), '%@%\n')
+    cat(fun_def, sep = '\n')
+    invisible(x)
+}
+
+modules::register_S3_method('print', 'decorated', print.decorated)
 
 prettify = function (f, original, decorator_calls) {
     attr(f, 'srcref') = pretty_code(original)
