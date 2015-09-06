@@ -4,11 +4,16 @@
     stop(deparse(substitute(decorator)), ' is not a decorator')
 
 `%@%.decorator` = function (decorator, f) {
+    pretty_decorators = as.list(match.call())[-1]
+    # Patch delayed decorator.
+    if (! is.null({pretty_patched = attr(decorator, 'calls')}))
+        pretty_decorators = c(pretty_patched, pretty_decorators[-1])
+
     # Handle operator precedence so that we can chain decorators.
     if (inherits(f, 'decorator'))
-        .delayed_decorate(decorator, f)
+        .delayed_decorate(decorator, f, pretty_decorators)
     else
-        prettify(decorator(f), f)
+        prettify(decorator(f), f, pretty_decorators[-length(pretty_decorators)])
 }
 
 decorator = function (f)
@@ -16,19 +21,26 @@ decorator = function (f)
 
 decorator = decorator(decorator)
 
-print.decorator = function (x, ...) {
-    fun_def = gsub('^function', 'decorator', capture.output(print.function(x)))
-    # Remove attributes, in particular `class`
-    attr_index = grep('^attr\\(,"class"\\)$', fun_def)
-    fun_def = fun_def[1 : attr_index - 1]
+print.decorated = function (x, useSource = TRUE, ...) {
+    bare = function (f) {
+        bare = unclass(f)
+        attr(bare, 'decorators') = NULL
+        bare
+    }
+
+    fun_def = capture.output(print.function(bare(x), useSource = useSource, ...))
+    for (decorator in attr(x, 'decorators'))
+        cat(deparse(decorator), '%@%\n')
     cat(fun_def, sep = '\n')
     invisible(x)
 }
 
-modules::register_S3_method('print', 'decorator', print.decorator)
+modules::register_S3_method('print', 'decorated', print.decorated)
 
-prettify = function (f, original) {
+prettify = function (f, original, decorator_calls) {
     attr(f, 'srcref') = pretty_code(original)
+    attr(f, 'decorators') = decorator_calls
+    class(f) = c('decorated', class(f))
     f
 }
 
@@ -37,5 +49,5 @@ pretty_code = function (f) {
     if (is.null(srcref)) body(f) else srcref
 }
 
-.delayed_decorate = function (d1, d2)
-    decorator(function (f) d1(d2(f)))
+.delayed_decorate = function (d1, d2, decorator_calls)
+    structure(decorator(function (f) d1(d2(f))), calls = decorator_calls)
