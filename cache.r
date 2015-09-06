@@ -10,6 +10,7 @@ modules::import('ebits/base', attach = c('closure', 'match_call_defaults'))
 #' @param f the function name
 #' @param arglist empty or one or more name or \code{name=expression} terms
 #' @param expr an expression
+#' @format NULL
 #' @examples
 #' fib = cache %@@% function (n) if (n < 2) 1 else fib(n - 1) + fib(n - 2)
 #' fib1 = function (n) if (n < 2) 1 else fib1(n - 1) + fib1(n - 2)
@@ -17,7 +18,7 @@ modules::import('ebits/base', attach = c('closure', 'match_call_defaults'))
 #' system.time(fib(31))
 #' #   user  system elapsed
 #' #  0.005   0.001   0.005
-#' system.time(fib(31))
+#' system.time(fib1(31))
 #' #   user  system elapsed
 #' #  2.802   0.011   2.816
 cache = decorator %@% function (f) {
