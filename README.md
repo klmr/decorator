@@ -96,8 +96,20 @@ logged = function (filename) decorator %@% function (f) {
 }
 ```
 
-> ¹ The `decorator` decorator is necessary to allow easy chaining of decorators,
-and to pretty-print decorator functions properly.
+The “decorators” module takes care of pretty-printing decorated functions to
+hide the uninteresting decorator wrappers. Instead, the original function body
+is shown, along with the declared decorators (as one might expect intuitively):
+
+```r
+print(echo)
+# logged("log.txt") %@%
+# twice %@%
+# function (msg)
+#     message(msg)
+# <environment: 0x7fd7d4f6a3c0>
+```
+
+> ¹ The `decorator` decorator is necessary to allow easy chaining of decorators.
 
 ### Rationale
 
