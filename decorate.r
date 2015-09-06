@@ -16,16 +16,6 @@ decorator = function (f)
 
 decorator = decorator(decorator)
 
-print.decorator = function (x, ...) {
-    fun_def = gsub('^function', 'decorator', capture.output(print.function(x)))
-    # Remove attributes, in particular `class`
-    attr_index = grep('^attr\\(,"class"\\)$', fun_def)
-    fun_def = fun_def[1 : attr_index - 1]
-    cat(fun_def, sep = '\n')
-    invisible(x)
-}
-
-modules::register_S3_method('print', 'decorator', print.decorator)
 
 prettify = function (f, original) {
     attr(f, 'srcref') = pretty_code(original)
