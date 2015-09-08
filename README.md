@@ -111,6 +111,24 @@ print(echo)
 
 > ¹ The `decorator` decorator is necessary to allow easy chaining of decorators.
 
+### The `cache` decorator
+
+The `cache` decorator causes a function to cache its results: calling the
+function again with the same arguments returns the cached result without
+re-executing the function. This is useful when re-calculating the results is
+significantly more expensive than maintaining and querying a cache.
+
+This can also be used to elegantly (if somewhat inefficiently) implement dynamic
+programming algorithms. Consider this implementation of the Fibonacci numbers:
+
+```r
+fib = cache %@% function (n) if (n < 2) 1 else fib(n - 1) + fib(n - 2)
+```
+
+This function has roughly linear runtime and is thus asymptotically more
+efficient than a naive recursive implementation (i.e. the same implementation
+without caching), which has exponential runtime.
+
 ### Rationale
 
 The concept of R function decorators is based on [Python function decorators][],
