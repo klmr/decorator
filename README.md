@@ -88,9 +88,9 @@ about `twice` is that it’s itself decorated by the `decorator` function.
 
 ```r
 #' Log each call to the decorated function
-logged = function (filename) decorator %@% function (f) {
+logged = function (file) decorator %@% function (f) {
     function (...) {
-        cat(deparse(match.call()), file = filename, append = TRUE)
+        cat(deparse(match.call()), '\n', file = file, append = TRUE)
         f(...)
     }
 }
