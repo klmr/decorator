@@ -131,6 +131,13 @@ without caching), which has exponential runtime.
 
 ### Rationale
 
+Computations on functions can be very useful and fit easily into the concept of
+R programming, since R treats functions as proper first-class objects and
+provides powerful introspection and metaprogramming capabilities. However, until
+now, systematically applying modifications to functions as soon as they are
+declared was syntactically not trivial. The decorator syntax encourages more
+widespread use of function modifications.
+
 The concept of R function decorators is based on [Python function decorators][],
 which also inspired the syntax. The syntax is designed to be as unobtrusive as
 possible, and to blend into the normal function declaration syntax.
