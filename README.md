@@ -4,6 +4,10 @@ A “decorator” is a function that wraps another function. This allows creatin
 new functions effortlessly, and is a powerful tool to add functionality to
 functions as soon as they are defined.
 
+> For a runnable example, see the [example vignette][]
+
+[example vignette]: examples.md
+
 For instance, let’s say we want a given function to be always called twice. This
 can of course be achieved easily by just executing the function body twice (for
 instance in a loop). However, a better way would be to just *tell* the function
