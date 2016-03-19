@@ -1,4 +1,4 @@
-decorate = modules::import('decorate', attach = TRUE)
+decorate = modules::import('./decorate', attach = TRUE)
 modules::import('ebits/base', attach = c('closure', 'match_call_defaults'))
 
 #' Make function cached
