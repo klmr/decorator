@@ -40,7 +40,7 @@ modules::register_S3_method('print', 'decorated', print.decorated)
 prettify = function (f, original, decorator_calls) {
     attr(f, 'srcref') = pretty_code(original)
     attr(f, 'decorators') = decorator_calls
-    class(f) = c('decorated', class(f))
+    class(f) = c(class(f), 'decorated')
     f
 }
 
