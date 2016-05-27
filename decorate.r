@@ -51,3 +51,6 @@ pretty_code = function (f) {
 
 .delayed_decorate = function (d1, d2, decorator_calls)
     structure(decorator(function (f) d1(d2(f))), calls = decorator_calls)
+
+if (is.null(modules::module_name()))
+    modules::import('./_tests')
