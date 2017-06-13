@@ -1,5 +1,5 @@
 decorate = modules::import('./decorate', attach = TRUE)
-modules::import('ebits/base', attach = c('closure', 'match_call_defaults'))
+modules::import('klmr/functional', attach = c('closure', 'match_call_defaults'))
 
 #' Make function cached
 #'
