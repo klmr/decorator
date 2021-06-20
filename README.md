@@ -1,4 +1,9 @@
-## R function decorators
+> ## 🚧 Unstable API 🚧
+>
+> Please note that this module is currently in the prototype stage, and the API
+> **will** change randomly from one commit to the next.
+
+## Function decorators for R
 
 A “decorator” is a function that wraps another function. This allows creating
 new functions effortlessly, and is a powerful tool to add functionality to
@@ -124,12 +129,12 @@ This can also be used to elegantly (if somewhat inefficiently) implement dynamic
 programming algorithms. Consider this implementation of the Fibonacci numbers:
 
 ```r
-fib = cache %@% function (n) if (n < 2) 1 else fib(n - 1) + fib(n - 2)
+fib = cache %@% function (n) if (n < 2L) 1L else fib(n - 1L) + fib(n - 2L)
 ```
 
-This function has roughly linear runtime and is thus asymptotically more
-efficient than a naive recursive implementation (i.e. the same implementation
-without caching), which has exponential runtime.
+This function has linear runtime and is thus asymptotically more efficient than
+a naïve recursive implementation (i.e. the same implementation without caching),
+which has exponential runtime.
 
 ### Rationale
 
