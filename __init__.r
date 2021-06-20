@@ -47,10 +47,12 @@ print.decorated = function (x, useSource = TRUE, ...) {
 box::register_S3_method('print', 'decorated', print.decorated)
 
 prettify = function (f, original, decorator_calls) {
-    attr(f, 'srcref') = pretty_code(original)
-    attr(f, 'decorators') = decorator_calls
-    class(f) = c(class(f), 'decorated')
-    f
+    structure(
+        f,
+        class = c('decorated', class(f)),
+        srcref = pretty_code(original),
+        decorators = decorator_calls
+    )
 }
 
 pretty_code = function (f) {
