@@ -29,7 +29,10 @@ The following decorator is more useful — it logs function calls.
 #' @param file the file to log to (can be a file name or descriptor)
 logged = function (file) decorator %@% function (f) {
     function (...) {
-        cat(deparse(match.call()), '\n', file = file, append = TRUE)
+        cat(
+            timestamp(quiet = TRUE), paste0(deparse(match.call()), '\n'),
+            file = file, append = TRUE
+        )
         f(...)
     }
 }

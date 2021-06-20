@@ -32,7 +32,10 @@ The following decorator is more useful — it logs function calls.
 #' @param file the file to log to (can be a file name or descriptor)
 logged = function (file) decorator %@% function (f) {
     function (...) {
-        cat(deparse(match.call()), '\n', file = file, append = TRUE)
+        cat(
+            timestamp(quiet = TRUE), paste0(deparse(match.call()), '\n'),
+            file = file, append = TRUE
+        )
         f(...)
     }
 }
@@ -70,7 +73,7 @@ echo('Hello, echo')
 ```
 
 ```
-## echo("Hello, echo")
+## ##------ Sun Jun 20 19:58:27 2021 ------## echo("Hello, echo")
 ```
 
 ```
@@ -94,7 +97,7 @@ echo
 ## function (msg) {
 ##     message(msg)
 ## }
-## <environment: 0x7fd400593268>
+## <environment: 0x7fe00034ced8>
 ```
 
 Let’s define and call a deprecated function:

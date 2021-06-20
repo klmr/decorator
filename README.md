@@ -4,19 +4,18 @@ A “decorator” is a function that wraps another function. This allows creatin
 new functions effortlessly, and is a powerful tool to add functionality to
 functions as soon as they are defined.
 
-> For a runnable example, see the [example vignette][]
+> For a runnable example, see the [example vignette][].
 
 [example vignette]: examples.md
 
-For instance, let’s say we want a given function to be always called twice. This
-can of course be achieved easily by just executing the function body twice (for
-instance in a loop). However, a better way would be to just *tell* the function
-“hey, execute twice”; so that, when the function is called, it is automatically
-executed twice:
+Let’s say we want a given function to be always called twice. This can of course
+be achieved easily by just executing the function body twice (for instance in a
+loop). However, a better way would be to just *tell* the function “hey, execute
+twice”; so that, when the function is called, it is automatically executed
+twice:
 
 ```r
-echo = function (msg)
-    message(msg)
+echo = function (msg) message(msg)
 
 echo('hi')
 # Desired output:
@@ -40,26 +39,25 @@ Alternatively, wrapping the original definition inside a function call works but
 becomes unreadable — especially once the function becomes longer:
 
 ```r
-echo = twice(
-    function (msg)
-        message(msg)
-)
+echo = twice(function (msg) message(msg))
 ```
 
 Now consider that we may wrap the function inside *multiple* other functions.
 Even worse. The “decorators” module allows us to write the following instead:
 
 ```r
-echo = twice %@% function (msg)
+echo = twice %@% function (msg) {
     message(msg)
+}
 ```
 
 A more realistic example might be a `logged` function that causes a function to
 be logged. Decorators can be chained, so we might write:
 
 ```r
-echo = logged('log.txt') %@% twice %@% function (msg)
+echo = logged('log.txt') %@% twice %@% function (msg) {
     message(msg)
+}
 ```
 
 For comparison, in Python this would be written as
