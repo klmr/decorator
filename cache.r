@@ -1,5 +1,10 @@
-decorate = modules::import('./decorate', attach = TRUE)
-modules::import('klmr/functional', attach = c('closure', 'match_call_defaults'))
+box::use(
+    klmr/decorator[...],
+    klmr/fun[closure, match_call_defaults],
+)
+
+#' @export
+box::use(.[`%@%`])
 
 #' Make function cached
 #'
@@ -12,15 +17,16 @@ modules::import('klmr/functional', attach = c('closure', 'match_call_defaults'))
 #' @param expr an expression
 #' @format NULL
 #' @examples
-#' fib = cache %@@% function (n) if (n < 2) 1 else fib(n - 1) + fib(n - 2)
-#' fib1 = function (n) if (n < 2) 1 else fib1(n - 1) + fib1(n - 2)
+#' fib = cache %@@% function (n) if (n < 2L) 1L else fib(n - 1L) + fib(n - 2L)
+#' fib1 = function (n) if (n < 2L) 1L else fib1(n - 1L) + fib1(n - 2L)
 #'
-#' system.time(fib(31))
+#' system.time(fib(31L))
 #' #   user  system elapsed
 #' #  0.005   0.001   0.005
-#' system.time(fib1(31))
+#' system.time(fib1(31L))
 #' #   user  system elapsed
 #' #  2.802   0.011   2.816
+#' @export
 cache = decorator %@% function (f) {
     cache = new.env()
     g = function (...) {
@@ -41,8 +47,6 @@ cache = decorator %@% function (f) {
     }
     closure(formals(f), body(g), environment())
 }
-
-`%@%` = decorate$`%@%`
 
 hash = function (obj) UseMethod('hash')
 

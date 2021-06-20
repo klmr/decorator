@@ -4,7 +4,7 @@ This file contains some example decorators and their usage.
 
 
 ```r
-import('decorate', attach = TRUE)
+box::use(klmr/decorator[...])
 ```
 
 ## Defining decorators
@@ -62,8 +62,9 @@ The following function uses two decorators at once:
 
 
 ```r
-echo = logged(stdout()) %@% twice %@% function (msg)
+echo = logged(stdout()) %@% twice %@% function (msg) {
     message(msg)
+}
 
 echo('Hello, echo')
 ```
@@ -90,17 +91,17 @@ echo
 ```
 ## logged(stdout()) %@%
 ## twice %@%
-## function (msg)
+## function (msg) {
 ##     message(msg)
-## <environment: 0x7fe114c6bcb0>
+## }
+## <environment: 0x7fd400593268>
 ```
 
 Let’s define and call a deprecated function:
 
 
 ```r
-double = deprecated('2 * x') %@% function (x)
-    2 * x
+double = deprecated('2 * x') %@% function (x) 2 * x
 
 double(5)
 ```
@@ -135,18 +136,18 @@ if __name__ == '__main__':
     app.run()
 ```
 
-Using decorators in conjunction with the [sys module][sys], it’s trivial to port
-this code over to R almost line by line:
+Using decorators it’s trivial to port this code over to R almost line by line:
 
 ```r
-sys = import('sys')
-flask = import('flask')
+box::use(pallets/flask)
 
-hello = flask$route('/<name>') %@% function (name)
+app = flask$app(box::name())
+
+hello = app$route('/<name>') %@% function (name) {
     sprintf('Hello %s', name)
+}
 
-sys$run(flask$run(module_name()))
+if (is.null(box::name())) app$run()
 ```
 
 [Flask]: http://flask.pocoo.org/
-[sys]: https://github.com/klmr/sys
